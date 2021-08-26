@@ -1,0 +1,61 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+public class TestApplication {
+   static final String DB_URL = "jdbc:mysql://localhost/mysql";
+   static final String USER = "guest";
+   static final String PASS = "guest123";
+  public static void main(String[] args) 
+  {
+     
+      try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+         Statement stmt = conn.createStatement();
+      ) {		      
+          String sql = "CREATE TABLE Movies " +
+                   "(name varchar(200), " +
+                   " actor VARCHAR(50), " + 
+                   " actress VARCHAR(55), " + 
+                    " director VARCHAR(55), " + 
+                   " yearofrelease INTEGER, " + 
+                   " PRIMARY KEY ( id ))"; 
+
+         stmt.executeUpdate(sql);
+         System.out.println("Created table in given database...");   	  
+      } catch (SQLException e) {
+         e.printStackTrace();
+      } 
+      try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+         Statement stmt = conn.createStatement();
+      ) {		      
+         // Execute a query
+         System.out.println("Inserting records into the table...");          
+         String sql = "INSERT INTO Movies VALUES ('bagubali', 'prabas', 'anushka', 'rajammouli', 2018)";
+         stmt.executeUpdate(sql);
+         sql = "INSERT INTO Movies VALUES ('evil dead', 'alan', 'rachel', 'stanley', 2001)";
+         stmt.executeUpdate(sql);
+         sql = "INSERT INTO Movies VALUES ('pow', 'abc', 'aaa', 'xxx', 1999)";
+         stmt.executeUpdate(sql);
+         sql = "INSERT INTO Movies VALUES('kanida', 'Sumit', 'Mittal', 'farosh', 2020)";
+         stmt.executeUpdate(sql);
+         System.out.println("Inserted records into the table...");   	  
+      } catch (SQLException e) {
+         e.printStackTrace();
+      } 
+         try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+         Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(QUERY);
+      ) {		      
+         while(rs.next()){
+            //Display values
+            System.out.print("name: " + rs.getInt("name"));
+            System.out.print(", actor: " + rs.getInt("actor"));
+            System.out.print(", actress: " + rs.getString("actress"));
+            System.out.println(", director: " + rs.getString("director"));
+            System.out.println(", yearofrelease: " + rs.getString("yearofrelease"));
+         }
+      } catch (SQLException e) {
+         e.printStackTrace();
+      } 
+   }
+}
